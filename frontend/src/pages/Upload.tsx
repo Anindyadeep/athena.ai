@@ -48,6 +48,7 @@ const UploadApp = () => {
           // await fetch("http://localhost:5000/story")
           //   .then((res) => res.json())
           //   .then((data) => {})
+          //   .catch((err) => console.log(err));
           setLocation("/storybook");
         }
       });
