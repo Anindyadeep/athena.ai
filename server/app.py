@@ -3,12 +3,15 @@ import json
 import boto3 
 from pathlib import Path
 from dotenv import load_dotenv
+
+from flask_cors import CORS
 from flask import Flask, request
 
 from src.chains import SummarizeChain
 from src.image_gen import ImageGenFromSummary
 from src.chatbot import IndexChatBot
 from src.mcq_gen import MCQgenChain
+from src.audio_gen import AudioGen
 
 load_dotenv(dotenv_path='.env/aws.env')
 
@@ -16,14 +19,14 @@ app = Flask(__name__)
 app.config['ARTIFACT_FOLDER'] = str(Path.home() / 'artifacts')
 app.config['AWS_ACCESS_KEY_ID'] = os.getenv('AWS_ACCESS_KEY_ID')
 app.config['AWS_SECRET_ACCESS_KEY'] = os.getenv('AWS_SECRET_ACCESS_KEY')
-
+CORS(app)
 # setting defaut name:
 name = "french_revolution"
 
 @app.route('/generate_story', methods = ['POST'])
 def generate_story():
     data = request.get_json()
-    aws_public_file_link = data.get("aws_public_file_link")
+    aws_public_file_link = data.get("url")
     #name = data.get("name")
     
     print("Downloading ...")
@@ -57,7 +60,7 @@ def generate_story():
     image_metadata = imag_gen.fetch_and_save_image() 
     image_metadata_keys = list(image_metadata.keys())
 
-    imagen_aws_metadata = {}
+    imagen_aws_metadata = []
 
     print("=> Uploading images to aws")
     for key in image_metadata_keys:
@@ -71,18 +74,41 @@ def generate_story():
             bucket_location = s3.get_bucket_location(Bucket=bucket_name)
             region = bucket_location['LocationConstraint']
             public_link = f"https://s3-{region}.amazonaws.com/{bucket_name}/{object_name}"
-            imagen_aws_metadata[key] = public_link
+            imagen_aws_metadata.append(public_link)
 
         except Exception as e:
             continue
         
+    
+    audio_aws_metadata = []
+    audio_gen = AudioGen(project_name = name, artifact_folder = app.config['ARTIFACT_FOLDER'])
+    audio_metadata = audio_gen.generate_audio()
+    audio_metadata_keys = list(audio_metadata.keys())
+
+    print("=> Uploading audio to aws")
+    for key in audio_metadata_keys[:2]:
+        file_path_to_upload = audio_metadata[key]
+        object_name = file_path_to_upload.split('/')[-1]
+        try:
+            s3.upload_file(
+                file_path_to_upload, bucket_name, object_name
+            )
+
+            bucket_location = s3.get_bucket_location(Bucket=bucket_name)
+            region = bucket_location['LocationConstraint']
+            public_link = f"https://s3-{region}.amazonaws.com/{bucket_name}/{object_name}"
+            audio_aws_metadata.append(public_link)
+
+        except Exception as e:
+            continue
 
     # TODO: An additional step is to generate the audio and upload it to aws 
 
     response = {
         "status" : 200, 
         "story_response_content" : story_response_content,
-        "image_metadata" : imagen_aws_metadata 
+        "image_metadata" : imagen_aws_metadata , 
+        "audio_metadata" : audio_aws_metadata
     }
 
     return json.dumps(response)
@@ -116,5 +142,5 @@ def generate_mcq():
     return response 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
 
