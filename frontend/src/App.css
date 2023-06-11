@@ -13,3 +13,8 @@
     flex-direction: column;
     justify-content: end;
 }
+
+body {
+    overflow-x: hidden;
+    max-width: 100vh;
+}

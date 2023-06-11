@@ -5,9 +5,13 @@ import Typed from "typed.js";
 import { useEffect, useRef, useState } from "react";
 import s3 from "../aws-config";
 import { useLocation } from "wouter";
-
+import { useAppDispatch } from "../redux/hooks";
+import { addToStoryBook } from "../redux/slice/storyBook";
+import { addToAudio } from "../redux/slice/audio";
+import "./upload.css"
 const TypedTitle = () => {
   const el = useRef(null);
+
   useEffect(() => {
     const typed = new Typed(el.current, {
       strings: ["Learning made fun", "Generate Story Book", "Listen to Podcasts", "Take a Quiz"],
@@ -28,6 +32,7 @@ const TypedTitle = () => {
 };
 
 const UploadApp = () => {
+  const dispatch = useAppDispatch()
   const [, setUploading] = useState(false);
   const [, setLocation] = useLocation();
   const handleUpload = async (event: any) => {
@@ -54,6 +59,14 @@ const UploadApp = () => {
             .then((res) => res.json())
             .then((data) => {
               console.log(data)
+              dispatch(addToAudio(data.audio_metadata[0]))
+              const newData = data.image_metadata.map((item: string, index: number) => ({
+                image: item,
+                content: data.story_response_content.summary_chunks[index]
+              }
+              ))
+              console.log(newData)
+              dispatch(addToStoryBook(newData))
               setLocation("/storybook")
             })
             .catch((err) => {
@@ -64,7 +77,7 @@ const UploadApp = () => {
     }
   };
   return (
-    <div>
+    <div className="div-class">
       <img
         src={require("../assert/Upload.jpg")}
         width="100%"

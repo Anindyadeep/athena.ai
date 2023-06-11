@@ -7,6 +7,7 @@ import "./Book.css";
 
 const BookApp = () => {
   const { storyBook: bookData } = useAppSelector((state) => state.storyBook);
+  console.log(bookData)
   const [currentPage, setCurrentPage] = useState(0);
   const { audio } = useAppSelector((state) => state.audio);
 
@@ -57,10 +58,10 @@ const BookApp = () => {
         </div>
         <div
           style={{
-            width: "70%",
             margin: "0 auto",
             minWidth: "500px",
             padding: "10px",
+            maxWidth: "25%",
           }}
         >
           <Carousel
@@ -72,26 +73,12 @@ const BookApp = () => {
             {bookData.map((page: any, index: number) => (
               <div key={index}>
                 <Card>
-                  <Grid container>
-                    <Grid xs={5}>
-                      <CardMedia
-                        component="img"
-                        image={page.image}
-                        sx={{
-                          objectFit: "cover",
-                          borderRadius: "20px",
-                        }}
-                      />
+                  <Grid container >
+                    <Grid xs={6}>
+                      <img width="150px" height="400px" src={page.image} />
                     </Grid>
-                    <Grid>
-                      <CardContent
-                        sx={{
-                          display: "flex",
-                          width: "100%",
-                          alignItems: "center",
-                          textAlign: "center",
-                        }}
-                      >
+                    <Grid xs={6}>
+                      <CardContent sx={{ height: "400px", overflowY: "scroll", scrollbarColor: "white" }}>
                         <Typography variant="body1">{page.content}</Typography>
                       </CardContent>
                     </Grid>
