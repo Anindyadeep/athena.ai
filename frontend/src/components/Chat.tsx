@@ -51,9 +51,11 @@ const ChatApp: React.FC = () => {
       sx={{
         display: "flex",
         flexDirection: "column",
-        height: "100vh",
+        height: "calc(100vh - 120px)",
         justifyContent: "flex-end",
         alignItems: "center",
+        overflow: "hidden",
+        overflowY: "scroll",
       }}
     >
       <Box
@@ -64,8 +66,10 @@ const ChatApp: React.FC = () => {
           borderRadius: "8px",
           backgroundColor: "#fff",
           width: "100%",
-          height: "100vh",
+          height: "calc(100vh - 120px)",
           padding: "20px",
+          overflow: "hidden",
+          overflowY: "scroll",
         }}
       >
         {/* Chat messages */}
