@@ -40,4 +40,4 @@ class IndexChatBot:
         print("=> Everything loaded successfully")
     
     def get_response(self, query : str) -> str:
-        return self.query_engine.query(query)
+        return str(self.query_engine.query(query))

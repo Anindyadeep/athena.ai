@@ -63,14 +63,18 @@ def generate_story():
     for key in image_metadata_keys:
         file_path_to_upload = image_metadata[key]
         object_name = file_path_to_upload.split('/')[-1]
-        s3.upload_file(
-            file_path_to_upload, bucket_name, object_name
-        )
+        try:
+            s3.upload_file(
+                file_path_to_upload, bucket_name, object_name
+            )
 
-        bucket_location = s3.get_bucket_location(Bucket=bucket_name)
-        region = bucket_location['LocationConstraint']
-        public_link = f"https://s3-{region}.amazonaws.com/{bucket_name}/{object_name}"
-        imagen_aws_metadata[key] = public_link
+            bucket_location = s3.get_bucket_location(Bucket=bucket_name)
+            region = bucket_location['LocationConstraint']
+            public_link = f"https://s3-{region}.amazonaws.com/{bucket_name}/{object_name}"
+            imagen_aws_metadata[key] = public_link
+
+        except Exception as e:
+            continue
         
 
     # TODO: An additional step is to generate the audio and upload it to aws 
@@ -113,3 +117,4 @@ def generate_mcq():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
