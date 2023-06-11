@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -9,8 +9,24 @@ import {
   FormControl,
   Button,
 } from "@mui/material";
-import { useAppSelector } from "../redux/hooks";
+import { addToQuiz } from "../redux/slice/quiz";
+import { useAppSelector, useAppDispatch } from "../redux/hooks";
 const QuizApp = () => {
+  const dispatch = useAppDispatch()
+  useEffect(() => {
+    fetch("https://f731-61-246-82-230.ngrok-free.app/get_mcq", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name: (new Date()).toString() })
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data.chunk_0)
+        dispatch(addToQuiz(data.chunk_0))
+      }
+      )
+  }, [])
+
   const { quiz: questions }: any = useAppSelector(
     (state: {
       quiz: Array<{
@@ -24,6 +40,7 @@ const QuizApp = () => {
     }) => state.quiz
   );
 
+  console.log(questions)
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
@@ -47,6 +64,7 @@ const QuizApp = () => {
       }
     }
   };
+  console.log(questions)
 
   return (
     <div
@@ -57,7 +75,7 @@ const QuizApp = () => {
         height: "100vh",
       }}
     >
-      <Card sx={{ width: 300, p: 3 }}>
+      {/* <Card sx={{ width: 300, p: 3 }}>
         <CardContent>
           {!quizCompleted ? (
             <div>
@@ -117,7 +135,7 @@ const QuizApp = () => {
             </div>
           )}
         </CardContent>
-      </Card>
+      </Card> */}
     </div>
   );
 };

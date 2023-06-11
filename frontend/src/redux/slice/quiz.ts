@@ -1,14 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-interface options {
-  id: number;
-  content: string;
-}
+
 
 interface question {
   content: string;
-  options: options[];
-  answer: number;
+  options: string[];
+  answer: string;
 }
 
 interface quizState {
@@ -17,50 +14,6 @@ interface quizState {
 
 const initialState: quizState = {
   quiz: [
-    {
-      content: "Jayanth",
-      options: [
-        {
-          id: 1,
-          content: "Jayanth",
-        },
-        {
-          id: 2,
-          content: "Jayanth",
-        },
-        {
-          id: 3,
-          content: "Jayanth",
-        },
-        {
-          id: 4,
-          content: "Jayanth",
-        },
-      ],
-      answer: 1,
-    },
-    {
-      content: "Jayanth",
-      options: [
-        {
-          id: 1,
-          content: "Jayanth",
-        },
-        {
-          id: 2,
-          content: "Jayanth",
-        },
-        {
-          id: 3,
-          content: "Jayanth",
-        },
-        {
-          id: 4,
-          content: "Jayanth",
-        },
-      ],
-      answer: 1,
-    },
   ],
 };
 
@@ -73,32 +26,10 @@ const quizSlice = createSlice({
     },
     removeQuiz: (state) => {
       state.quiz = [
-        {
-          content: "Jayanth",
-          options: [
-            {
-              id: 1,
-              content: "Jayanth",
-            },
-            {
-              id: 2,
-              content: "Jayanth",
-            },
-            {
-              id: 3,
-              content: "Jayanth",
-            },
-            {
-              id: 4,
-              content: "Jayanth",
-            },
-          ],
-          answer: 1,
-        },
       ];
     },
   },
 });
 
-export const { removeQuiz } = quizSlice.actions;
+export const { addToQuiz, removeQuiz } = quizSlice.actions;
 export default quizSlice.reducer;

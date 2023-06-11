@@ -46,7 +46,7 @@ const UploadApp = () => {
           alert("Check your internet connection");
         } else {
           console.log(data.Location)
-          await fetch("http://localhost:5000/story", {
+          await fetch("https://f731-61-246-82-230.ngrok-free.app/generate_story", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ url: data.Location }),

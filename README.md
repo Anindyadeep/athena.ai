@@ -24,3 +24,9 @@ Welcome to Athena.ai! We revolutionize the way school students learn tough conce
 - Langchain, LlamaIndex, Stability AI, OpenAI
 - AWS
 - React, Flask 
+
+
+curl -X POST -H "Content-Type: application/json" -d '{
+  "aws_public_file_link": "https://gen-ai-storage.s3.ap-south-1.amazonaws.com/BT1010_Application.pdf",
+  "name": "french_revolution"
+}' https://f731-61-246-82-230.ngrok-free.app/generate_story | python -m json.tool
