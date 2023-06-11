@@ -78,13 +78,19 @@ class MCQgenChain:
         for chunk_number, chunk_wise_mcq in enumerate(self.generate_chunkwise_mcq()):
             semi_chunk_dict = {}
             for mcq in chunk_wise_mcq:
-                question, options, answer = mcq['question'], mcq['options'], mcq['answer']
-                semi_chunk_dict[question] = {
-                    'a' : options[0], 
-                    'b' : options[1], 
-                    'c' : options[2], 
-                    'd' : options[3], 
-                    'answer' : answer
-                }
+                try:
+                    question = mcq['question']
+                    options = mcq['options']
+                    answer = mcq['answer']
+                    semi_chunk_dict[question] = {
+                        'a' : options[0], 
+                        'b' : options[1], 
+                        'c' : options[2], 
+                        'd' : options[3], 
+                        'answer' : answer
+                    }
+                except Exception as e:
+                    continue
+                
             all_mcqs[chunk_number] = semi_chunk_dict
         return all_mcqs
