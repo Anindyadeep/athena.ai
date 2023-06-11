@@ -1,16 +1,10 @@
 import { useState } from "react";
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  Grid,
-} from "@mui/material";
-
+import { Card, CardContent, CardMedia, Typography, Grid } from "@mui/material";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { useAppSelector } from "../redux/hooks";
-import './Book.css'
+import "./Book.css";
+
 const BookApp = () => {
   const { storyBook: bookData } = useAppSelector((state) => state.storyBook);
   const [currentPage, setCurrentPage] = useState(0);
@@ -38,7 +32,23 @@ const BookApp = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4" color="primary">
+          <Typography variant="h3" color="primary">
+            My Story Book
+          </Typography>
+        </div>
+        <div
+          style={{
+            width: "70%",
+            margin: "0 auto",
+            minWidth: "500px",
+            textAlign: "center",
+            marginBottom: "30px",
+            display: "flex",
+            justifyContent: "space-evenly",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h5" color="primary">
             Listen to the Story
           </Typography>
           <audio controls>
@@ -50,8 +60,6 @@ const BookApp = () => {
             width: "70%",
             margin: "0 auto",
             minWidth: "500px",
-            border: "1px solid grey",
-            borderRadius: "20px",
             padding: "10px",
           }}
         >

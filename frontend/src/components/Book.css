@@ -1,0 +1,15 @@
+.carousel.carousel-slider {
+    display: flex;
+}
+
+.carousel.carousel-slider .control-arrow {
+    position: relative;
+    background-color: grey;
+    height: 100px;
+    border-radius: 16px;
+    margin: 5px;
+}
+
+.carousel.carousel-slider {
+    align-items: center;
+}

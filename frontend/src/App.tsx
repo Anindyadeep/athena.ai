@@ -1,17 +1,18 @@
 import { Route, Switch } from "wouter";
-import Upload from "./pages/Upload";
+import Upload from "./components/Upload";
 import Book from "./components/Book";
 import Quiz from "./components/Quiz";
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
-import UpgradeIcon from "@mui/icons-material/Upgrade";
 import QuizIcon from "@mui/icons-material/Quiz";
 import CottageIcon from "@mui/icons-material/Cottage";
 import ReorderIcon from "@mui/icons-material/Reorder";
+import ChatIcon from "@mui/icons-material/Chat";
 import { Typography } from "@mui/material";
 import { BLUE } from "./styles/colors";
 import { useLocation } from "wouter";
 
 import "./App.css";
+import ChatApp from "./components/Chat";
 const App = () => {
   const [, setLocation] = useLocation();
   return (
@@ -71,7 +72,14 @@ const App = () => {
               >
                 Quiz
               </MenuItem>
-              <MenuItem icon={<UpgradeIcon />}>Export</MenuItem>
+              <MenuItem
+                icon={<ChatIcon />}
+                onClick={() => {
+                  setLocation("/chat");
+                }}
+              >
+                Export
+              </MenuItem>
             </Menu>
           </Sidebar>
           <main
@@ -85,6 +93,9 @@ const App = () => {
             </Route>
             <Route path="/quiz">
               <Quiz />
+            </Route>
+            <Route path="/chat">
+              <ChatApp />
             </Route>
           </main>
         </div>
