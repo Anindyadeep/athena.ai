@@ -45,10 +45,6 @@ const UploadApp = () => {
           console.log("Error uploading data: ", err);
           alert("Check your internet connection");
         } else {
-          // await fetch("http://localhost:5000/story")
-          //   .then((res) => res.json())
-          //   .then((data) => {})
-          //   .catch((err) => console.log(err));
           setLocation("/storybook");
         }
       });
