@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Box, TextField, Button } from "@mui/material";
 
 interface Message {
@@ -15,27 +15,9 @@ const ChatApp: React.FC = () => {
   ]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const handleSendMessage = (message: string) => {
-    if (message.trim() === "") {
-      return;
-    }
-
-    setMessages((prevMessages) => [
-      ...prevMessages,
-      { content: message, fromUser: true },
-    ]);
-
-    setTimeout(() => {
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { content: "Chatbot response", fromUser: false },
-      ]);
-    }, 1000);
-  };
-
   const handleButtonClick = () => {
     if (inputRef.current && inputRef.current.value.trim() !== "") {
-      handleSendMessage(inputRef.current.value);
+      fetchResponse(inputRef.current.value);
       inputRef.current.value = "";
     }
   };
@@ -44,6 +26,34 @@ const ChatApp: React.FC = () => {
     if (event.key === "Enter") {
       handleButtonClick();
     }
+  };
+  const fetchResponse = async (message: string) => {
+    if (message.trim() === "") {
+      return;
+    }
+    setMessages((prevMessages) => [
+      ...prevMessages,
+      { content: message, fromUser: true },
+    ]);
+    await fetch("https://f731-61-246-82-230.ngrok-free.app/chatbot", {
+      method: "POST",
+      body: JSON.stringify({
+        query: message,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { content: data.response, fromUser: false },
+        ]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
