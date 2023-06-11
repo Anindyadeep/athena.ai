@@ -57,7 +57,7 @@ class MCQgenChain:
     def get_chunkwise_output(self):
         chunk_wise_output = []
 
-        for idx, chunk in tqdm(enumerate(self.chunks), total=len(self.chunks)):
+        for idx, chunk in tqdm(enumerate(self.chunks[1:2]), total=len(self.chunks[1:2])):
             user_query = self.prompt.format_prompt(user_prompt = chunk)
             user_query_output = self.chat_model(user_query.to_messages())
             chunk_wise_output.append(user_query_output.content)
@@ -76,21 +76,12 @@ class MCQgenChain:
     def generate_mcqs(self):
         all_mcqs = {}
         for chunk_number, chunk_wise_mcq in enumerate(self.generate_chunkwise_mcq()):
-            semi_chunk_dict = {}
-            for mcq in chunk_wise_mcq:
-                try:
-                    question = mcq['question']
-                    options = mcq['options']
-                    answer = mcq['answer']
-                    semi_chunk_dict[question] = {
-                        'a' : options[0], 
-                        'b' : options[1], 
-                        'c' : options[2], 
-                        'd' : options[3], 
-                        'answer' : answer
-                    }
-                except Exception as e:
-                    continue
-                
-            all_mcqs[chunk_number] = semi_chunk_dict
+            sub_chunks = []
+            for mcqs in chunk_wise_mcq:
+                sub_chunks.append({
+                    "question": mcqs['question'],
+                    "options": mcqs['options'][0].split('.')[:4],
+                    "answer": mcqs['answer']
+                })
+            all_mcqs[f"chunk_{chunk_number}"] = sub_chunks
         return all_mcqs

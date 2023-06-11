@@ -23,7 +23,7 @@ const BookApp = () => {
       <div>
         <div
           style={{
-            width: "70%",
+            maxWidth: "70%",
             margin: "0 auto",
             minWidth: "500px",
             textAlign: "center",
