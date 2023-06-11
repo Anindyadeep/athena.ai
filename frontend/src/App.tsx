@@ -1,4 +1,4 @@
-import { Route, Switch } from "wouter";
+import { Route, Switch, Redirect } from "wouter";
 import Upload from "./components/Upload";
 import Book from "./components/Book";
 import Quiz from "./components/Quiz";
@@ -18,7 +18,7 @@ const App = () => {
   return (
     <div style={{ padding: "0px" }}>
       <Switch>
-        <Route path="/upload">
+        <Route path="/">
           <Upload />
         </Route>
         <div style={{ height: "100vh", display: "flex", width: "100vw" }}>
@@ -49,7 +49,7 @@ const App = () => {
               <MenuItem
                 icon={<ReorderIcon />}
                 onClick={() => {
-                  setLocation("/upload");
+                  setLocation("/");
                 }}
                 className="sidebar-bottom"
               >
@@ -97,6 +97,7 @@ const App = () => {
             <Route path="/chat">
               <ChatApp />
             </Route>
+            <Redirect to="/" />
           </main>
         </div>
       </Switch>

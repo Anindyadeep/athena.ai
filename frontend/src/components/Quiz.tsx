@@ -24,23 +24,19 @@ const QuizApp = () => {
         console.log(data.chunk_0)
         dispatch(addToQuiz(data.chunk_0))
       }
-      )
+      ).catch((err) => console.log(err))
   }, [])
 
   const { quiz: questions }: any = useAppSelector(
     (state: {
       quiz: Array<{
-        content: string;
-        options: Array<{
-          id: number;
-          content: string;
-        }>;
-        answer: number;
+        question: string;
+        options: string[];
+        answer: string;
       }>;
     }) => state.quiz
   );
 
-  console.log(questions)
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedOption, setSelectedOption] = useState("");
   const [score, setScore] = useState(0);
@@ -52,7 +48,7 @@ const QuizApp = () => {
 
   const handleNextQuestion = () => {
     if (selectedOption !== "") {
-      if (parseInt(selectedOption) === questions[currentQuestion].answer) {
+      if (selectedOption[0] === questions[currentQuestion].answer[0]) {
         setScore(score + 1);
       }
       setSelectedOption("");
@@ -64,7 +60,7 @@ const QuizApp = () => {
       }
     }
   };
-  console.log(questions)
+
 
   return (
     <div
@@ -75,7 +71,7 @@ const QuizApp = () => {
         height: "100vh",
       }}
     >
-      {/* <Card sx={{ width: 300, p: 3 }}>
+      <Card sx={{ width: 300, p: 3 }}>
         <CardContent>
           {!quizCompleted ? (
             <div>
@@ -88,7 +84,7 @@ const QuizApp = () => {
                   borderBottom: "1px solid grey",
                 }}
               >
-                {questions[currentQuestion].content}
+                {questions[currentQuestion].question}
               </Typography>
               <Typography
                 variant="body2"
@@ -101,12 +97,12 @@ const QuizApp = () => {
                   value={selectedOption}
                   onChange={handleOptionChange}
                 >
-                  {questions[currentQuestion].options.map((option: any) => (
+                  {questions[currentQuestion].options.map((option: any, index: number) => (
                     <FormControlLabel
-                      key={option.id}
-                      value={option.id.toString()}
+                      key={index}
+                      value={option}
                       control={<Radio />}
-                      label={option.content}
+                      label={option}
                       sx={{ mb: 1, color: "grey" }}
                     />
                   ))}
@@ -135,7 +131,7 @@ const QuizApp = () => {
             </div>
           )}
         </CardContent>
-      </Card> */}
+      </Card>
     </div>
   );
 };

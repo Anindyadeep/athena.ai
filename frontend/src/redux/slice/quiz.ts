@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 
 interface question {
-  content: string;
+  question: string;
   options: string[];
   answer: string;
 }
@@ -14,6 +14,11 @@ interface quizState {
 
 const initialState: quizState = {
   quiz: [
+    {
+      question: "What is the capital of India?",
+      options: ["Delhi", "Mumbai", "Kolkata", "Chennai"],
+      answer: "Delhi",
+    }
   ],
 };
 
