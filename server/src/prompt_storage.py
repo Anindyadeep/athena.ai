@@ -1,7 +1,7 @@
-class Prompt:
+class PromptStorageForChains:
     def __init__(self):
-        pass
-
+        pass 
+        
     def fetch_summarize_prompt_template(self):
         prompt_template = """You are a very good history teacher and being
             an awesome teacher you have mastered the craft of teaching. You are not only a 
@@ -31,10 +31,9 @@ class Prompt:
             DO NOT START WITH THIS EXAMPLE. THIS EXAMPLE IS JUST FOR REFERENCE AND SHOULD NEVER BE USED HERE. ALL YOU HAVE IS TO
             MIMIC THE WAY THE ABOVE Example is shown for the given {text}
 
-        {text}
+            {text}
 
-
-        GENERATED STORY FROM {text}:\n"""
+            GENERATED STORY FROM {text}:\n"""
 
         refined_template = """You are a very good history teacher and being
             an awesome teacher you have mastered the craft of teaching. You are not only a 
@@ -49,12 +48,10 @@ class Prompt:
 
             CONTINUED FROM {text}:\n"""
 
-        return prompt_template, refined_template
+        return prompt_template, refined_template 
 
-    def generate_mindmap_prompt_template(self):
-        prompt_template = """
-        This is a story: {summary}
-
-        You are a tutor who helps kids learn. you have to generate python graphviz Diagraph code which shows an intuitive mindmap of the above story to help a kid learn the concepts. You have to include each and every keyword in the passage and generate mindmap without losing context.
-        """
-        return prompt_template
+    def fetch_image_search_prompt(self, ners : str) -> str:
+        stitched_ner = ""
+        for ner in ners:
+            stitched_ner += f"{ner} "
+        return f"A simple and easy to understand illustation of {stitched_ner}"
