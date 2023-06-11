@@ -14,9 +14,9 @@ response = {"chunks": ["\nOnce upon a time, in a faraway land called France, the
 llm = OpenAI(max_tokens=1000, temperature=0)
 
 
-def generate_content():
+def generate_content(pdf_url):
     # chain = SummarizeChain(
-    #     source_path=r"C:\Users\jayan\Desktop\Jayanth\Coding\GenAI Hackathon\server\history.pdf")
+    #     source_path=pdf_url)
     # response = chain.get_summary_based_on_prompt()
     story = ''.join(response['chunks'])
     t_to_s_resp = text_to_speech(story)

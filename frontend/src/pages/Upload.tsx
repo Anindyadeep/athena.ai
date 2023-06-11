@@ -10,7 +10,7 @@ const TypedTitle = () => {
   const el = useRef(null);
   useEffect(() => {
     const typed = new Typed(el.current, {
-      strings: ["Learning  made fun", "Generate StoryBook", ""],
+      strings: ["Learning made fun", "Generate Story Book", "Listen to Podcasts", "Take a Quiz"],
       typeSpeed: 100,
       backSpeed: 100,
       loop: true,
@@ -39,16 +39,26 @@ const UploadApp = () => {
         Body: file,
         ContentType: "multipart/form-data",
       };
-      s3.upload(params, function (err: any, data: any) {
+      s3.upload(params, async (err: any, data: any) => {
         setUploading(false);
         if (err) {
           console.log("Error uploading data: ", err);
           alert("Check your internet connection");
         } else {
-          // await fetch("http://localhost:5000/story")
-          //   .then((res) => res.json())
-          //   .then((data) => {})
-          setLocation("/storybook");
+          console.log(data.Location)
+          await fetch("http://localhost:5000/story", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ url: data.Location }),
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data)
+              setLocation("/storybook")
+            })
+            .catch((err) => {
+              alert("Something went wrong, please try again later")
+            })
         }
       });
     }
@@ -86,7 +96,7 @@ const UploadApp = () => {
               }}
               color="grey"
             >
-              Athena.AI
+              Athena.ai
             </Typography>
             <Typography variant="h6" color="primary">
               <TypedTitle />
@@ -97,7 +107,7 @@ const UploadApp = () => {
               component="label"
               sx={{ margin: "30px" }}
             >
-              Upload File PDF
+              Upload a PDF file
               <input
                 type="file"
                 onChange={(e) => {
