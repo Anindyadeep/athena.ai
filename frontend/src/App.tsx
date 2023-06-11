@@ -97,7 +97,7 @@ const App = () => {
             <Route path="/chat">
               <ChatApp />
             </Route>
-            <Redirect to="/" />
+            {/* <Redirect to="/" /> */}
           </main>
         </div>
       </Switch>
