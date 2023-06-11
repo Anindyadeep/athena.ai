@@ -10,6 +10,8 @@ import ReorderIcon from "@mui/icons-material/Reorder";
 import { Typography } from "@mui/material";
 import { BLUE } from "./styles/colors";
 import { useLocation } from "wouter";
+
+import "./App.css";
 const App = () => {
   const [, setLocation] = useLocation();
   return (
@@ -30,6 +32,7 @@ const App = () => {
             collapsed={true}
           >
             <Menu
+              className="sidebar-menu"
               menuItemStyles={{
                 button: ({ level }) => {
                   if (level === 0) {
@@ -47,6 +50,7 @@ const App = () => {
                 onClick={() => {
                   setLocation("/upload");
                 }}
+                className="sidebar-bottom"
               >
                 <Typography variant="h6">Salus.ai</Typography>
               </MenuItem>

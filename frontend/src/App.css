@@ -1,0 +1,15 @@
+.sidebar-bottom {
+    position: absolute !important;
+    top: 0;
+}
+
+.sidebar-menu {
+    height: 100vh;
+}
+
+.css-ewdv3l {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+}
